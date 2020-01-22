@@ -1,40 +1,45 @@
 import React, { useState } from "react";
 
-function Form() {
-  //   const [name, setName] = useState("");
-  //   const [email, setEmail] = useState("");
-  const [user, setUser] = useState({ name: "", email: "" });
+function Form(props) {
+  const [user, setUser] = useState({ name: "", email: "", role: "" });
 
-  // handle name
-  const nameChanger = event => {
-    setUser({ ...user, name: event.target.value });
-  };
-
-  // handle email
-  const emailChanger = event => {
-    setUser({ ...user, email: event.target.value });
+  const newUser = event => {
+    setUser({
+      ...user,
+      [event.target.name]: event.target.value
+    });
   };
 
   //handle submit
   const handleSubmit = event => {
     event.preventDefault();
+    props.setTeam(prev => [...prev, user]);
+    setUser({ name: "", email: "", role: "" });
   };
 
   return (
     <div>
-      {console.log(user)}
+      {/* {console.log(user)} */}
 
       <form onSubmit={event => handleSubmit(event)}>
         <label>
-          Name:
-          <input onChange={event => nameChanger(event)} type="text" />
+          Name: <input name="name" onChange={newUser} type="text" />
         </label>
+        <br />
         <label>
-          Email:
-          <input onChange={event => emailChanger(event)} type="text" />
+          Email: <input name="email" onChange={newUser} type="email" required />
         </label>
-
-        <button>Submit!</button>
+        <br />
+        <label>
+          Role:{" "}
+          <select id="role" name="role" onChange={newUser}>
+            <option />
+            <option>nerd</option>
+            <option>geek</option>
+            <option>whatever</option>
+          </select>
+        </label>
+        <button type="submit">Submit!</button>
       </form>
     </div>
   );
